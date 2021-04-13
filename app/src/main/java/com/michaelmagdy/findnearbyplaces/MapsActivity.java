@@ -12,6 +12,7 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -110,7 +111,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         mMap.setMyLocationEnabled(true);
                     }
                 } else {
-                    Toast.makeText(this, "Please Accept Permission to proceed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.permissions), Toast.LENGTH_SHORT).show();
                 }
                 return;
         }
@@ -138,7 +139,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
-        markerOptions.title("My Current Location");
+        markerOptions.title(getString(R.string.current_loc));
         markerOptions.icon(
                 BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         currentUserLocationMarker = mMap.addMarker(markerOptions);
@@ -174,6 +175,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    public void onClick(View view) {
 
     }
 }

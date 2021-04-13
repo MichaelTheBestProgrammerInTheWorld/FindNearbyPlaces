@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">FindNearbyPlaces</string>
     <string name="title_activity_maps">Map</string>
+
+    <string name="search_place">Search for a Place</string>
+    <string name="current_loc">My Current Location</string>
+    <string name="permissions">Please Accept Permission to proceed</string>
 </resources>
