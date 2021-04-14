@@ -8,11 +8,15 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -30,6 +34,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
+import java.util.List;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -41,6 +48,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Location lastLocation;
     private Marker currentUserLocationMarker;
     public static final int REQUEST_USER_LOCATION_CODE = 99;
+
+    //views
+    private EditText addressField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +65,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        findViews();
     }
 
     /**
@@ -180,5 +192,46 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void onClick(View view) {
 
+        switch (view.getId()){
+
+            case R.id.search_nearby:
+                //TODO: CLEAR PREVIOUS SEARCH PINS OR MARKERS ON MAP
+                String address = addressField.getText().toString();
+                List<Address> addressList = null;
+                MarkerOptions userMarkerOptions = new MarkerOptions();
+                if (!TextUtils.isEmpty(address)){
+                    Geocoder geocoder = new Geocoder(this);
+                    try {
+                        addressList = geocoder.getFromLocationName(address, 8);
+                        if (addressList != null){
+                            for (Address userAddress : addressList){
+                                LatLng latLng = new LatLng(userAddress.getLatitude(),
+                                        userAddress.getLongitude());
+                                userMarkerOptions.position(latLng);
+                                userMarkerOptions.title(address);
+                                userMarkerOptions.icon(
+                                        BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                                mMap.addMarker(userMarkerOptions);
+                                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                                mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
+                            }
+                        } else {
+                            //TODO: FIXS BUGS 1-ZERO RESULTS. 2- MULTIPLE RESULTS. 3-NEARBY RESULTS.
+                            Toast.makeText(this, getString(R.string.search_not_found), Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    Toast.makeText(this, getString(R.string.search_empty), Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+        }
+    }
+
+    private void findViews(){
+        addressField = findViewById(R.id.location_search);
     }
 }

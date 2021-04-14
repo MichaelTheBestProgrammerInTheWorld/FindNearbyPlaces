@@ -5,4 +5,6 @@
     <string name="search_place">Search for a Place</string>
     <string name="current_loc">My Current Location</string>
     <string name="permissions">Please Accept Permission to proceed</string>
+    <string name="search_empty">Search cannot be empty</string>
+    <string name="search_not_found">Location not found, Please try different address</string>
 </resources>
