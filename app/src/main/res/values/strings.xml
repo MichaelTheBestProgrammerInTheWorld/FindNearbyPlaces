@@ -7,4 +7,7 @@
     <string name="permissions">Please Accept Permission to proceed</string>
     <string name="search_empty">Search cannot be empty</string>
     <string name="search_not_found">Location not found, Please try different address</string>
+    <string name="search_hospital">Searching for nearby Hospitals</string>
+    <string name="search_restaurant">Searching for nearby Restaurants</string>
+    <string name="search_school">Searching for nearby Schools</string>
 </resources>
